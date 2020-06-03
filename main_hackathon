@@ -1,0 +1,71 @@
+package roottt;
+
+import java.util.*;
+import java.io.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.text.DecimalFormat;
+import java.math.RoundingMode;
+import java.io.FileNotFoundException;
+
+public class job4 {
+
+public static void main(String[] args) throws IOException {
+JSONObject json= new JSONObject();
+JSONObject json1 = new JSONObject();
+JSONObject json2 = new JSONObject();
+double[] arr1 = new double[10000];
+File file = new File("\"C:\\\\Users\\\\ANBARASAN\\\\Desktop\\\\Memo.txt\"");
+try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+String readLine;
+String str1, str, value, result;
+int line = 0;
+int i = 0, j, val = 0;
+int count = 0, start = 0;
+double temp, max = 0.0, sum = 0.0;
+while ((readLine = br.readLine()) != null) {
+count += 1;
+StringTokenizer st = new StringTokenizer(readLine);
+while (st.hasMoreTokens()) {
+str = st.nextToken();
+start += 1;
+if (start == 9) {
+value = str;
+temp = Double.parseDouble(value);
+arr1[i++] = temp;
+start = 0;
+break;
+}
+}
+}
+for (j = 0; j < count; j++) {
+val = j + 1;
+str1 = String.format("%d", val);
+result = String.format("%.1f", arr1[j]);
+json1.put(str1 + "s", result);
+if (arr1[j] > max) {
+max = arr1[j];
+}
+sum = sum + arr1[j];
+val = 0;
+}
+double average = sum / count;
+String avg = String.format("%.2f", average);
+String maximum = String.format("%.2f", max);
+json.put("values: ", json1);
+json.put("maxcpu", maximum);
+json.put("avgcpu", avg);
+json2.put("sampletransaction",json);
+//System.out.println(js2);
+JSONArray jsonList = new JSONArray();
+jsonList.add(json2);
+try (FileWriter file1 = new FileWriter("D://cpuOutput.json")) {
+file1.write(jsonList.toString());
+file1.flush();
+} catch (Exception e) {
+e.printStackTrace();
+}
+
+}
+}
+}
